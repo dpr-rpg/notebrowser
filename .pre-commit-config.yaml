@@ -1,0 +1,44 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.7.0
+    hooks:
+      - id: isort
+  - repo: https://gitlab.com/PyCQA/flake8
+    rev: 3.8.4
+    hooks:
+      - id: flake8
+  - repo: https://gitlab.com/PyCQA/pydocstyle
+    rev: 5.1.1
+    hooks:
+      - id: pydocstyle
+        files: ^notebrowser/
+        args:
+          - --convention=numpy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.800
+    hooks:
+      - id: mypy
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.2.1
+    hooks:
+      - id: prettier
+  - repo: local
+    hooks:
+      - id: tests
+        name: Run tests with pytest
+        language: system
+        types: [python]
+        entry: pytest
+        pass_filenames: false
