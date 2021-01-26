@@ -1,7 +1,7 @@
 from pathlib import Path
 
+from notebrowser.campaigndata import load_notes, load_records, load_sessions
 from notebrowser.records import get_references
-from notebrowser.sitedata import load_notes, load_records, load_sessions
 
 
 def test_load_records():

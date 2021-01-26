@@ -1,4 +1,4 @@
-"""Classes for storing site data."""
+"""Classes for storing campaign data."""
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -33,20 +33,20 @@ class Note:
 
 
 @dataclass(frozen=True)
-class SiteData:
-    """Container for all of the input data for the site."""
+class CampaignData:
+    """Container for all of the input data for the campaign."""
 
     records: RecordLibrary
     sessions: List[Session]
     notes: List[Note]
 
 
-def load_site_data(data_dir: Path) -> SiteData:
-    """Read site data from `data_dir`."""
+def load_campaign_data(data_dir: Path) -> CampaignData:
+    """Read campaign data from `data_dir`."""
     records = load_records(data_dir / "records")
     sessions = load_sessions(data_dir / "sessions")
     notes: List[Note] = load_notes(data_dir / "notes")
-    return SiteData(records, sessions, notes)
+    return CampaignData(records, sessions, notes)
 
 
 def _read_files(base_dir: Path, glob: str) -> List[str]:
