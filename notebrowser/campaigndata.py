@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Set, Type, TypeVar
 
 import dacite
 import frontmatter
@@ -32,6 +32,9 @@ class Note:
     references: Set[URI]
 
 
+FromMd = TypeVar("FromMd", Note, Session)
+
+
 @dataclass(frozen=True)
 class CampaignData:
     """Container for all of the input data for the campaign."""
@@ -43,10 +46,23 @@ class CampaignData:
 
 def load_campaign_data(data_dir: Path) -> CampaignData:
     """Read campaign data from `data_dir`."""
-    records = load_records(data_dir / "records")
-    sessions = load_sessions(data_dir / "sessions")
-    notes: List[Note] = load_notes(data_dir / "notes")
+    records: RecordLibrary = load_records(data_dir / "records")
+    sessions: List[Session] = load_from_markdown(data_dir / "sessions", Session)
+    notes: List[Note] = load_from_markdown(data_dir / "notes", Note)
     return CampaignData(records, sessions, notes)
+
+
+def load_records(record_dir: Path) -> RecordLibrary:
+    """Load records from YAML files in `record_dir`."""
+    contents = _read_files(record_dir, "*.yml")
+    record_dict = yaml.safe_load("".join(contents))
+    return _records_from_dict(record_dict)
+
+
+def load_from_markdown(directory: Path, data_class: Type[FromMd]) -> List[FromMd]:
+    """Load Sessions or Notes from markdown files with headers."""
+    contents = _read_files(directory, "*.md")
+    return [_parse_markdown_with_header(c, data_class) for c in contents]
 
 
 def _read_files(base_dir: Path, glob: str) -> List[str]:
@@ -57,46 +73,16 @@ def _read_files(base_dir: Path, glob: str) -> List[str]:
     return contents
 
 
-def load_records(record_dir: Path) -> RecordLibrary:
-    """Load records from `record_dir`."""
-    contents = _read_files(record_dir, "*.yml")
-    record_dict = yaml.safe_load("".join(contents))
-    return records_from_dict(record_dict)
-
-
-def load_sessions(session_dir: Path) -> List[Session]:
-    """Load sessions from `session_dir`."""
-    contents = _read_files(session_dir, "*.md")
-    return [_parse_session(c) for c in contents]
-
-
-def load_notes(note_dir: Path) -> List[Note]:
-    """Load notes from `note_dir`."""
-    contents = _read_files(note_dir, "*.md")
-    return [_parse_note(c) for c in contents]
-
-
-def _read_markdown_with_header(text: str) -> Dict[str, Any]:
+def _parse_markdown_with_header(text: str, data_class: Type[FromMd]) -> FromMd:
     metadata, content = frontmatter.parse(text)
     references = get_references(content)
-    return {"content": content, "references": references, **metadata}
-
-
-def _parse_note(note_text: str) -> Note:
-    data = _read_markdown_with_header(note_text)
+    data = {"content": content, "references": references, **metadata}
     return dacite.from_dict(
-        data_class=Note, data=data, config=dacite.Config(cast=[URI])
+        data_class=data_class, data=data, config=dacite.Config(cast=[URI])
     )
 
 
-def _parse_session(session_text: str) -> Session:
-    data = _read_markdown_with_header(session_text)
-    return dacite.from_dict(
-        data_class=Session, data=data, config=dacite.Config(cast=[URI])
-    )
-
-
-def records_from_dict(record_dict: Dict[str, Any]) -> RecordLibrary:
+def _records_from_dict(record_dict: Dict[str, Any]) -> RecordLibrary:
     """Import records from a dictionary from a yaml file."""
     return dacite.from_dict(
         data_class=RecordLibrary,

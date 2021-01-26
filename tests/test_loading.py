@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from notebrowser.campaigndata import load_notes, load_records, load_sessions
+from notebrowser.campaigndata import Note, Session, load_from_markdown, load_records
 from notebrowser.records import get_references
 
 
@@ -9,11 +9,11 @@ def test_load_records():
 
 
 def test_load_notes():
-    load_notes(Path("example/notes"))
+    load_from_markdown(Path("example/notes"), Note)
 
 
 def test_load_sessions():
-    load_sessions(Path("example/sessions"))
+    load_from_markdown(Path("example/sessions"), Session)
 
 
 def test_get_references():
