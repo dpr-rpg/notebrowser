@@ -1,7 +1,7 @@
 """Functions for rendering pages."""
 from pathlib import Path
 
-from notebrowser.records import URI, Record, RecordLibrary
+from notebrowser.records import URI, Record, RecordLibrary, RecordType
 
 
 def html_link(path: Path, text: str) -> str:
@@ -9,34 +9,43 @@ def html_link(path: Path, text: str) -> str:
     return f'<a href="{path}">{text}</a>'
 
 
-def record_path(uri: URI, record_dir: Path) -> Path:
+def record_path(uri: URI, record_page_dir: Path) -> Path:
     """Generate path to a record page."""
-    return record_dir / f"{uri}.html"
+    return record_page_dir / f"{uri}.html"
 
 
-def record_link(uri: URI, record: Record, record_dir: Path) -> str:
+def record_link(uri: URI, record: Record, record_page_dir: Path) -> str:
     """Generate a link to a record page."""
-    path = record_path(uri, record_dir)
+    path = record_path(uri, record_page_dir)
     name = record.name
     return html_link(path, name)
 
 
-def create_record_pages(library: RecordLibrary, record_dir: Path) -> None:
+def create_record_pages(library: RecordLibrary, record_page_dir: Path) -> None:
     """Create pages for all records in a library."""
-    assert record_dir.exists()
-    assert record_dir.is_dir()
+    assert record_page_dir.exists()
+    assert record_page_dir.is_dir()
     for uri, record in library.items():
-        path = record_path(uri, record_dir)
+        path = record_path(uri, record_page_dir)
         content = str(library[uri])
         with open(path, "w") as f:
             f.write(content)
 
 
-def create_record_toc(library: RecordLibrary, toc_path: Path, record_dir: Path) -> None:
+def create_record_toc(
+    record_type: RecordType,
+    library: RecordLibrary,
+    toc_path: Path,
+    record_page_dir: Path,
+) -> None:
     """Create a table of contents page for records."""
-    links = [record_link(uri, record, record_dir) for uri, record in library.items()]
+    links = [
+        record_link(uri, record, record_page_dir)
+        for uri, record in library.items()
+        if record.record_type == record_type
+    ]
     content = (
-        "<h1>Records</h1>\n<ul>\n"
+        f"<h1>{record_type.value.capitalize()}s</h1>\n<ul>\n"
         + "".join(f"<li>{link}</li>\n" for link in links)
         + "</ul>"
     )
