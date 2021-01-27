@@ -8,7 +8,8 @@ import dacite
 import frontmatter
 import yaml
 
-from notebrowser.records import URI, RecordLibrary, RecordType, get_references
+from notebrowser.records import RecordLibrary, RecordType
+from notebrowser.uri import URI, get_references
 
 
 @dataclass(frozen=True)
