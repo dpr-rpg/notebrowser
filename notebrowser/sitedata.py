@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict
 
-from notebrowser.campaigndata import CampaignData, load_campaign_data
+from notebrowser.campaigndata import CampaignData
+from notebrowser.loading import load_campaign_data
 from notebrowser.records import RecordType
 from notebrowser.rendering import create_record_pages, create_record_toc
 
