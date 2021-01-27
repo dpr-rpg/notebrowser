@@ -1,19 +1,11 @@
 from pathlib import Path
 
-from notebrowser.campaigndata import Note, Session, load_from_markdown, load_records
+from notebrowser.campaigndata import load_campaign_data
 from notebrowser.uri import get_references
 
 
-def test_load_records():
-    load_records(Path("example/records"))
-
-
-def test_load_notes():
-    load_from_markdown(Path("example/notes"), Note)
-
-
-def test_load_sessions():
-    load_from_markdown(Path("example/sessions"), Session)
+def test_load_campaign_data():
+    load_campaign_data(Path("example"))
 
 
 def test_get_references():

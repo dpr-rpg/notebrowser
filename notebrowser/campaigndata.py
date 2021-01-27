@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List, Set, Type, TypeVar
+from typing import Any, Callable, Dict, List, Set, Type, TypeVar
 
 import dacite
 import frontmatter
@@ -33,10 +33,6 @@ class Note:
     references: Set[URI]
 
 
-FromMd = TypeVar("FromMd", Note, Session)
-Data = TypeVar("Data", Record, Note, Session)
-
-
 @dataclass(frozen=True)
 class CampaignData:
     """Container for all of the input data for the campaign."""
@@ -49,43 +45,29 @@ class CampaignData:
 def load_campaign_data(data_dir: Path) -> CampaignData:
     """Read campaign data from `data_dir`."""
     return CampaignData(
-        load_records(data_dir / "records"),
-        load_from_markdown(data_dir / "sessions", Session),
-        load_from_markdown(data_dir / "notes", Note),
+        load_data(data_dir / "records", "*.yml", _parse_yaml_data, Record),
+        load_data(data_dir / "sessions", "*.md", _parse_markdown_data, Session),
+        load_data(data_dir / "notes", "*.md", _parse_markdown_data, Note),
     )
 
 
-def load_records(record_dir: Path) -> Library[Record]:
-    """Load records from YAML files in `record_dir`."""
-    contents = _read_files(record_dir, "*.yml")
-    record_dict = yaml.safe_load("".join(contents))
+Data = TypeVar("Data", Record, Note, Session)
+ConverterFunc = Callable[[List[str]], Dict[str, Any]]
+
+
+def load_data(
+    directory: Path,
+    glob: str,
+    to_dict: ConverterFunc,
+    data_class: Type[Data],
+) -> Library[Data]:
+    """Load data."""
+    contents = _read_files(directory, glob)
+    data_dict = to_dict(contents)
     return {
-        URI(k): from_dict(v, Record, cast=[RecordType, URI])
-        for k, v in record_dict.items()
+        URI(k): from_dict(v, data_class, cast=[RecordType, URI])
+        for k, v in data_dict.items()
     }
-
-
-def load_from_markdown(directory: Path, data_class: Type[FromMd]) -> Library[FromMd]:
-    """Load Sessions or Notes from markdown files with headers."""
-    contents = _read_files(directory, "*.md")
-    data_dict = {i: _parse_markdown_with_header(c) for i, c in enumerate(contents)}
-    return {
-        URI(str(k)): from_dict(v, data_class, cast=[URI]) for k, v in data_dict.items()
-    }
-
-
-def _read_files(base_dir: Path, glob: str) -> List[str]:
-    files = [open(f, "r") for f in base_dir.rglob(glob)]
-    contents = [f.read() for f in files]
-    for f in files:
-        f.close()
-    return contents
-
-
-def _parse_markdown_with_header(text: str) -> Dict[str, Any]:
-    metadata, content = frontmatter.parse(text)
-    references = get_references(content)
-    return {"content": content, "references": references, **metadata}
 
 
 def from_dict(data: Dict[str, Any], data_class: Type[Data], cast: List[Type]) -> Data:
@@ -95,3 +77,25 @@ def from_dict(data: Dict[str, Any], data_class: Type[Data], cast: List[Type]) ->
         data_class=data_class,
         config=dacite.Config(cast=cast),
     )
+
+
+def _parse_yaml_data(contents: List[str]) -> Dict[str, Any]:
+    return yaml.safe_load("".join(contents))
+
+
+def _parse_markdown_data(contents: List[str]) -> Dict[str, Any]:
+    return {str(i): _parse_markdown_file_with_header(c) for i, c in enumerate(contents)}
+
+
+def _parse_markdown_file_with_header(text: str) -> Dict[str, Any]:
+    metadata, content = frontmatter.parse(text)
+    references = get_references(content)
+    return {"content": content, "references": references, **metadata}
+
+
+def _read_files(base_dir: Path, glob: str) -> List[str]:
+    files = [open(f, "r") for f in base_dir.rglob(glob)]
+    contents = [f.read() for f in files]
+    for f in files:
+        f.close()
+    return contents
