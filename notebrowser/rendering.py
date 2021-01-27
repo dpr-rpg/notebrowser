@@ -1,7 +1,8 @@
 """Functions for rendering pages."""
 from pathlib import Path
 
-from notebrowser.records import URI, Record, RecordLibrary, RecordType
+from notebrowser.records import Record, RecordType
+from notebrowser.uri import URI, Library
 
 
 def html_link(path: Path, text: str) -> str:
@@ -21,7 +22,7 @@ def record_link(uri: URI, record: Record, record_page_dir: Path) -> str:
     return html_link(path, name)
 
 
-def create_record_pages(library: RecordLibrary, record_page_dir: Path) -> None:
+def create_record_pages(library: Library[Record], record_page_dir: Path) -> None:
     """Create pages for all records in a library."""
     assert record_page_dir.exists()
     assert record_page_dir.is_dir()
@@ -34,7 +35,7 @@ def create_record_pages(library: RecordLibrary, record_page_dir: Path) -> None:
 
 def create_record_toc(
     record_type: RecordType,
-    library: RecordLibrary,
+    library: Library[Record],
     toc_path: Path,
     record_page_dir: Path,
 ) -> None:

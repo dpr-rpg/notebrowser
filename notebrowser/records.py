@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Dict, ItemsView, List, Optional
+from typing import Dict, List, Optional
 
 from notebrowser.uri import URI
 
@@ -49,18 +49,3 @@ class RecordTree:
 
     record: Optional[Record] = None
     children: List["RecordTree"] = field(default_factory=list)
-
-
-@dataclass(frozen=True)
-class RecordLibrary:
-    """A collection of Records indexed by URI strings."""
-
-    records: Dict[URI, Record]
-
-    def __getitem__(self, uri: URI) -> Record:
-        """Get records by uri."""
-        return self.records[uri]
-
-    def items(self) -> ItemsView[URI, Record]:
-        """Get (uri, record) pairs."""
-        return self.records.items()

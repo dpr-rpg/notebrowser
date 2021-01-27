@@ -8,8 +8,8 @@ import dacite
 import frontmatter
 import yaml
 
-from notebrowser.records import RecordLibrary, RecordType
-from notebrowser.uri import URI, get_references
+from notebrowser.records import Record, RecordType
+from notebrowser.uri import URI, Library, get_references
 
 
 @dataclass(frozen=True)
@@ -34,26 +34,27 @@ class Note:
 
 
 FromMd = TypeVar("FromMd", Note, Session)
+Data = TypeVar("Data", Record, Note, Session)
 
 
 @dataclass(frozen=True)
 class CampaignData:
     """Container for all of the input data for the campaign."""
 
-    records: RecordLibrary
+    records: Library[Record]
     sessions: List[Session]
     notes: List[Note]
 
 
 def load_campaign_data(data_dir: Path) -> CampaignData:
     """Read campaign data from `data_dir`."""
-    records: RecordLibrary = load_records(data_dir / "records")
+    records: Library[Record] = load_records(data_dir / "records")
     sessions: List[Session] = load_from_markdown(data_dir / "sessions", Session)
     notes: List[Note] = load_from_markdown(data_dir / "notes", Note)
     return CampaignData(records, sessions, notes)
 
 
-def load_records(record_dir: Path) -> RecordLibrary:
+def load_records(record_dir: Path) -> Library[Record]:
     """Load records from YAML files in `record_dir`."""
     contents = _read_files(record_dir, "*.yml")
     record_dict = yaml.safe_load("".join(contents))
@@ -83,10 +84,18 @@ def _parse_markdown_with_header(text: str, data_class: Type[FromMd]) -> FromMd:
     )
 
 
-def _records_from_dict(record_dict: Dict[str, Any]) -> RecordLibrary:
+def _records_from_dict(record_dict: Dict[str, Any]) -> Library[Record]:
     """Import records from a dictionary from a yaml file."""
+    return {
+        URI(k): from_dict(v, Record, cast=[RecordType, URI])
+        for k, v in record_dict.items()
+    }
+
+
+def from_dict(data: Dict[str, Any], data_class: Type[Data], cast: List[Type]) -> Data:
+    """Convert Dict[str, Any] to Data object."""
     return dacite.from_dict(
-        data_class=RecordLibrary,
-        data={"records": record_dict},
-        config=dacite.Config(cast=[RecordType, URI]),
+        data=data,
+        data_class=data_class,
+        config=dacite.Config(cast=cast),
     )
