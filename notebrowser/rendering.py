@@ -40,15 +40,12 @@ def apply_links(text: str, site_data: SiteData) -> str:
 
 def render_homepage(site_data: SiteData) -> str:
     """Render the homepage."""
-    return apply_links(
-        html_list(
-            [f"{uri}: {record.name}" for uri, record in site_data.records.items()]
-        ),
-        site_data,
+    return html_list(
+        [f"{uri}: {record.name}" for uri, record in site_data.records.items()]
     )
 
 
 def render_record_page(site_data: SiteData, uri: URI) -> str:
     """Render a page for a single record."""
     rec = site_data.records[uri]
-    return apply_links(f"<h1>{rec.name}</h1>\n<p>{rec.description}</p>", site_data)
+    return f"<h1>{rec.name}</h1>\n<p>{rec.description}</p>"
