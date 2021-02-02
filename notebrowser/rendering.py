@@ -3,8 +3,12 @@ from functools import reduce
 from pathlib import Path
 from typing import Any
 
+from jinja2 import Environment, PackageLoader
+
 from notebrowser.sitedata import SiteData
 from notebrowser.uri import URI, get_references
+
+jinja_env = Environment(loader=PackageLoader("notebrowser", "templates"))
 
 
 def html_link(path: Path, text: str) -> str:
@@ -40,12 +44,12 @@ def apply_links(text: str, site_data: SiteData) -> str:
 
 def render_homepage(site_data: SiteData) -> str:
     """Render the homepage."""
-    return html_list(
-        [f"{uri}: {record.name}" for uri, record in site_data.records.items()]
-    )
+    template = jinja_env.get_template("homepage.html")
+    return template.render(site_data=site_data)
 
 
 def render_record_page(site_data: SiteData, uri: URI) -> str:
     """Render a page for a single record."""
-    rec = site_data.records[uri]
-    return f"<h1>{rec.name}</h1>\n<p>{rec.description}</p>"
+    template = jinja_env.get_template("record_page.html")
+    record = site_data.records[uri]
+    return template.render(site_data=site_data, record=record)

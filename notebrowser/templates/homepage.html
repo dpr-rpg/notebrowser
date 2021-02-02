@@ -1,0 +1,12 @@
+{% extends "page.html" %}
+{% block title %}Home{% endblock %}
+{% block heading %}Home{% endblock %}
+{% block body %}
+<ul>
+{% for uri, record in site_data.records.items() %}
+    <li>
+        {{ uri }}: {{ record.name }}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
