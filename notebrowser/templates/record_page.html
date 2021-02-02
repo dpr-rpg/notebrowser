@@ -2,5 +2,6 @@
 {% block title %}{{ record.name }}{% endblock %}
 {% block heading %}{{ record.name }}{% endblock %}
 {% block body %}
-    {{ record.description }}
+    <p>{{ record.tagline }}</p>
+    {{ record.text_body }}
 {% endblock %}
