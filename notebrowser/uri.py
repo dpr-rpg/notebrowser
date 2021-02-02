@@ -36,7 +36,7 @@ class URI:
 
     def __str__(self) -> str:
         """Return the URI as a string."""
-        return self.uri
+        return f"{{{self.uri}}}"
 
 
 T = TypeVar("T")
