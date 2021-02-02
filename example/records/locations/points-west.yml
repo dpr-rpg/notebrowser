@@ -1,0 +1,64 @@
+western-wilderness:
+  record_type: location
+  name: Western Wilderness
+  region: true
+  location: top
+  tagline: A sparsely populated hinterland
+  bordering:
+    - To the East is {greater-red-cliffs}.
+
+nexus:
+  record_type: location
+  name: The Nexus
+  location: western-wilderness
+  tagline: Strange circular disturbance
+  bordering:
+    - "{cliffside-road} runs East toward {crab-harbor}."
+    - A path into the jungle leads Northeast to {twiggys}.
+
+bandit-camp:
+  record_type: location
+  name: The Bandit Camp
+  location: western-wilderness
+  tagline: Outpost for ambushing travelers
+  bordering:
+    - To the South, the camp overlooks {cliffside-road}.
+    - To the North, through dense jungle lies {temple-ruins}.
+
+forest-river:
+  record_type: location
+  name: The Forest River
+  location: western-wilderness
+  tagline: A slow river through the wilderness
+  bordering:
+    - In the Southeast, the river empties into the ocean at {red-cliffs}.
+    - In the Northwest, the river flows North of {temple-ruins}.
+
+temple-ruins:
+  record_type: location
+  name: The Temple Ruins
+  location: western-wilderness
+  tagline: Mysterious ruins in the jungle
+  bordering:
+    - To the South, through dense jungle lies {bandit-camp}.
+    - To the North flows {forest-river}.
+    - To the Southwest, an overgrown trail leads to {twiggys}.
+
+twiggys:
+  record_type: location
+  name: "Twiggy's Treehouse"
+  location: western-wilderness
+  tagline: Ramshackle house full of mad scribblings
+  bordering:
+    - To the Northeast, an overgrown trail leads to {temple-ruins}.
+    - To the Southwest, the forest thins out at {nexus}.
+
+cliffside-road:
+  record_type: location
+  name: The Cliffside Road
+  location: western-wilderness
+  tagline: Dangerous road along the coast
+  bordering:
+    - To the West, the land flattens at {nexus}.
+    - To the North, above the road is {bandit-camp}.
+    - The road's Eastern terminus is at {crab-harbor}.

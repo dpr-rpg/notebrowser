@@ -26,7 +26,7 @@ def load_records(record_dir: Path) -> Library[records.Record]:
     yaml_files = _read_files(record_dir, "*.yml")
     markdown_files = _read_files(record_dir, "*.md")
     data_dict = _parse_yaml_data(yaml_files) | _parse_markdown_data(markdown_files)
-    return {URI(k): record_from_dict(v, cast=[URI]) for k, v in data_dict.items()}
+    return {URI(k): record_from_dict(v, cast=[URI, Path]) for k, v in data_dict.items()}
 
 
 def record_from_dict(data: dict[str, Any], cast: list[type]) -> records.Record:

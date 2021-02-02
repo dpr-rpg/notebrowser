@@ -1,0 +1,33 @@
+crab-harbor:
+  record_type: location
+  name: Crab Harbor
+  location: western-wilderness
+  tagline: A sleepy fishing village
+  description: |
+    Crab harbor is a small coastal village.
+    The primary industry is crab fishing.
+  gallery:
+    - path: crab-harbor-map.jpg
+      caption: Map of Crab Harbor
+  bordering:
+    - To the West, {cliffside-road} leads toward {nexus}.
+
+iron-gnome:
+  record_type: location
+  name: The Iron Gnome
+  tagline: Crab Harbor's only tavern
+  location: crab-harbor
+  description: |
+    A bustling tavern and a good place to spend a night.
+
+magistrates-tower:
+  record_type: location
+  name: Crab Harbor Magistrate's Tower
+  location: crab-harbor
+  tagline: Headquarters of the Guild in Crab Harbor
+  description: |
+    Improbably large tower in the center of Crab Harbor.
+    It houses a courtroom and a magical prison.
+  gallery:
+    - path: crab-harbor-map.jpg
+      caption: Map of Crab Harbor showing the tower at center

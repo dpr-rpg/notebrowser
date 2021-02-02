@@ -1,0 +1,73 @@
+archibald:
+  record_type: pc
+  name: Archibald Ramsay
+  shortname: Archibald
+  class: Paladin
+  level: 4
+  tagline: "Jacobite laird out for vengeance"
+  location: dukes-manor
+  description: |
+    * Stocky, with graying reddish hair cropped close.
+    * Missing an eye, lost to a British bayonette
+    during the battle of Killiecrankie.
+    * Wields a [Rapier of Vengeance](https://5e.tools/items/rapier-of-vengeance-dmg.html).
+    * Doesn't trust {ulrich}.
+  inventory:
+    - Rapier of vengeance
+    - 2 flintlock pistols
+    - Flask of _whiskey_
+    - Bagpipes
+
+octavia:
+  record_type: pc
+  name: Octavia Tran
+  shortname: Octavia
+  class: Druid
+  level: 3
+  tagline: "Spacy botanist with a wild streak"
+  description: |
+    She is a little frantic, with hair somewhat matted and dreaded despite being Vietnamese.
+    She seems to be all over the place but she has her shit together.
+  gallery:
+    - path: octavia.jpg
+      caption: "Octavia looking typically frantic."
+
+kywe:
+  record_type: pc
+  name: Kywe
+  class: Sorcerer
+  level: 5
+  tagline: "A fierce advocate."
+  gallery:
+    - path: kywe.jpg
+      caption: "Kywe before last year's gala."
+
+hildegard:
+  record_type: pc
+  name: Hildegard Lister
+  shortname: Hildegard
+  class: Bard
+  level: 4
+  tagline: "The woman in black"
+  gallery:
+    - path: hildegard.jpg
+      caption: "This bard is a polymath."
+    - path: hildegard2.jpg
+      caption: "Hildegard's usual attire."
+
+ulrich:
+  record_type: pc
+  name: Ulrich Gerhardt von Pappenheim-Schwindegg
+  shortname: Ulrich
+  class: Monk
+  level: 4
+  tagline: "Famous monster-hunter"
+
+yoyo:
+  record_type: pc
+  name: Yoyo Zhang
+  shortname: Yoyo
+  class: Cleric
+  subclass: Forge
+  level: 4
+  tagline: "What's all that racket!?"

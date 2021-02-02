@@ -1,0 +1,34 @@
+rice-farmer:
+  record_type: npc
+  name: The Rice Farmer
+  tagline: Rustic with a large family
+  location: farming-village
+  description: |
+    A wary but hospitable farmer.
+    He has a wife and five to seven children.
+    Is afraid of the henchmen of {the-duke}.
+  gallery:
+    - path: rice-farmer.jpg
+      caption: In his fields.
+
+the-anchor:
+  record_type: npc
+  name: The Anchor
+  tagline: Head of House Tiger
+  location: red-cliffs
+
+young-yang:
+  record_type: npc
+  name: Young Yang
+  tagline: Heir to House Tiger
+  location: red-cliffs
+  description: Eldest son of {the-anchor}.
+
+the-duke:
+  record_type: npc
+  name: The Duke
+  tagline: Mysterious Englishman
+  location: dukes-manor
+  description: |
+    No one seems to know where his money comes from.
+    It's very *suspicious*.
