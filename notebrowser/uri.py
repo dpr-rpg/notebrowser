@@ -7,11 +7,6 @@ re_slug = re.compile(r"^[-a-zA-Z0-9_]+$")
 re_ref = re.compile(r"\{([-a-zA-Z0-9_]+)\}")
 
 
-def get_references(content: str) -> Set[str]:
-    """Get the unique set of references in a string."""
-    return set(re_ref.findall(content))
-
-
 def _is_slug(value: str) -> bool:
     match = re_slug.match(value)
     if match:
@@ -41,3 +36,8 @@ class URI:
 
 T = TypeVar("T")
 Library = Dict[URI, T]
+
+
+def get_references(content: str) -> Set[URI]:
+    """Get the unique set of references in a string."""
+    return set(URI(ref) for ref in re_ref.findall(content))

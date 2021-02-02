@@ -49,7 +49,7 @@ def _parse_markdown_data(contents: list[str]) -> dict[str, Any]:
 
 def _parse_markdown_file_with_header(text: str) -> dict[str, Any]:
     metadata, content = frontmatter.parse(text)
-    references = get_references(content)
+    references = {u.uri for u in get_references(content)}
     return {"text_body": content, "text_references": references, **metadata}
 
 

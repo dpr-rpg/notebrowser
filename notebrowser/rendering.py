@@ -1,8 +1,10 @@
 """Functions for rendering pages."""
+from functools import reduce
 from pathlib import Path
+from typing import Any
 
-from notebrowser.records import Record
-from notebrowser.uri import URI, Library
+from notebrowser.sitedata import SiteData
+from notebrowser.uri import URI, get_references
 
 
 def html_link(path: Path, text: str) -> str:
@@ -10,24 +12,43 @@ def html_link(path: Path, text: str) -> str:
     return f'<a href="{path}">{text}</a>'
 
 
-def record_path(uri: URI, record_page_dir: Path) -> Path:
-    """Generate path to a record page."""
-    return record_page_dir / f"{uri}.html"
+def html_list(items: list[Any]) -> str:
+    """Render a list of items as an HTML list."""
+    return "<ul>" + "".join(f"<li>{str(item)}</li>" for item in items) + "</ul>\n"
 
 
-def record_link(uri: URI, record: Record, record_page_dir: Path) -> str:
+def record_link(site_data: SiteData, uri: URI) -> str:
     """Generate a link to a record page."""
-    path = record_path(uri, record_page_dir)
-    name = record.name
+    record = site_data.records[uri]
+    path = site_data.record_pages[uri]
+    if record.shortname:
+        name = record.shortname
+    else:
+        name = record.name
     return html_link(path, name)
 
 
-def create_record_pages(library: Library[Record], record_page_dir: Path) -> None:
-    """Create pages for all records in a library."""
-    assert record_page_dir.exists()
-    assert record_page_dir.is_dir()
-    for uri, record in library.items():
-        path = record_path(uri, record_page_dir)
-        content = str(library[uri])
-        with open(path, "w") as f:
-            f.write(content)
+def apply_links(text: str, site_data: SiteData) -> str:
+    """Replace URIs with links to pages."""
+    references = get_references(text)
+    return reduce(
+        lambda t, uri: t.replace(str(uri), record_link(site_data, uri)),
+        references,
+        text,
+    )
+
+
+def render_homepage(site_data: SiteData) -> str:
+    """Render the homepage."""
+    return apply_links(
+        html_list(
+            [f"{uri}: {record.name}" for uri, record in site_data.records.items()]
+        ),
+        site_data,
+    )
+
+
+def render_record_page(site_data: SiteData, uri: URI) -> str:
+    """Render a page for a single record."""
+    rec = site_data.records[uri]
+    return apply_links(f"<h1>{rec.name}</h1>\n<p>{rec.description}</p>", site_data)
