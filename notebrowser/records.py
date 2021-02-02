@@ -1,18 +1,10 @@
-"""Record classes and derived info structures."""
+"""Record classes."""
+import datetime
 from dataclasses import dataclass, field
-from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
-from notebrowser.uri import URI
-
-
-class RecordType(Enum):
-    """Enumerated record types."""
-
-    PC = "pc"
-    NPC = "npc"
-    LOCATION = "location"
+from notebrowser.uri import URI, Library
 
 
 @dataclass(frozen=True)
@@ -23,29 +15,70 @@ class Image:
     caption: str
 
 
-StatBlock = Dict[str, int]
+StatBlock = dict[str, int]
 
 
 @dataclass(frozen=True)
 class Record:
     """A GM-note record."""
 
-    record_type: RecordType
     name: str
-    shortname: str
+    shortname: Optional[str] = None
     tagline: str = ""
     description: str = ""
-    location: Optional[URI] = None
-    cls: Optional[str] = None
-    lvl: Optional[int] = None
-    stats: Optional[StatBlock] = None
-    gallery: Optional[List[Image]] = None
-    info: Dict[str, str] = field(default_factory=dict)
+    gallery: Optional[list[Image]] = None
+    info: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
-class RecordTree:
-    """A tree data structure with records as nodes."""
+class Character(Record):
+    """A base class for Character records."""
 
-    record: Optional[Record] = None
-    children: List["RecordTree"] = field(default_factory=list)
+    cls: Optional[str] = None
+    lvl: Optional[int] = None
+    stats: Optional[StatBlock] = None
+
+
+@dataclass(frozen=True)
+class PlayerCharacter(Character):
+    """Record for a Player Character."""
+
+    player: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class NonPlayerCharacter(Character):
+    """Record for a Non-Player Character."""
+
+    location: Optional[URI] = None
+    faction: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class Location(Record):
+    """Record for a Location."""
+
+    location: Optional[URI] = None
+
+
+@dataclass(frozen=True)
+class TextRecord(Record):
+    """Base class for Records that are mainly free text."""
+
+    date: Optional[datetime.date] = None
+    text_body: str = ""
+    text_references: set[URI] = field(default_factory=set)
+
+
+@dataclass(frozen=True)
+class Session(TextRecord):
+    """Record for the log from a single session of play."""
+
+    funfacts: Library[str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class Note(TextRecord):
+    """Record for miscellaneous notes."""
+
+    topic: Optional[str] = None

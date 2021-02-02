@@ -1,6 +1,9 @@
 ---
+record_type: session
+uri: session-01
+name: Session 1
 date: 2021-01-20
-summary: In which some things happened
+description: In which some things happened
 funfacts:
   player1: Had a difficult childhood.
   player2: Likes spicy food.

@@ -1,7 +1,7 @@
 """Functions for rendering pages."""
 from pathlib import Path
 
-from notebrowser.records import Record, RecordType
+from notebrowser.records import Record
 from notebrowser.uri import URI, Library
 
 
@@ -31,24 +31,3 @@ def create_record_pages(library: Library[Record], record_page_dir: Path) -> None
         content = str(library[uri])
         with open(path, "w") as f:
             f.write(content)
-
-
-def create_record_toc(
-    record_type: RecordType,
-    library: Library[Record],
-    toc_path: Path,
-    record_page_dir: Path,
-) -> None:
-    """Create a table of contents page for records."""
-    links = [
-        record_link(uri, record, record_page_dir)
-        for uri, record in library.items()
-        if record.record_type == record_type
-    ]
-    content = (
-        f"<h1>{record_type.value.capitalize()}s</h1>\n<ul>\n"
-        + "".join(f"<li>{link}</li>\n" for link in links)
-        + "</ul>"
-    )
-    with open(toc_path, "w") as f:
-        f.write(content)

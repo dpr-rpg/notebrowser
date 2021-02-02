@@ -1,5 +1,7 @@
 ---
-title: My note
+record_type: note
+uri: example_note
+name: My note
 date: 2021-01-25
 ---
 
