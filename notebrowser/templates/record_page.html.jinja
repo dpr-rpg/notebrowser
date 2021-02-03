@@ -9,4 +9,16 @@
 
 {% block body %}
     {{ record.description }}
+
+    {% block mentions %}
+        <section>
+            <h2>Mentioned by:</h2>
+            <ul>
+            {% for m in mentions %}
+                <li>{{ m }}</li>
+            {% endfor %}
+            </ul>
+        </section>
+    {% endblock %}
+
 {% endblock %}

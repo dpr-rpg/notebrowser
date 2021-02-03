@@ -61,4 +61,7 @@ def render_record_page(site_data: SiteData, uri: URI) -> str:
     """Render a page for a single record."""
     record = site_data.records[uri]
     template = _template_dispatch(record)
-    return template.render(site_data=site_data, record=record)
+    mentions = [
+        m_uri for m_uri, m_rec in site_data.records.items() if uri in m_rec.references
+    ]
+    return template.render(site_data=site_data, record=record, mentions=mentions)
