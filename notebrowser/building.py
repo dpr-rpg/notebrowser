@@ -12,6 +12,7 @@ def make(base_dir: Path) -> None:
     site_data = create_site_data(base_dir)
     pages = render_pages(site_data)
     make_directories(site_data)
+    write_stylesheet(site_data)
     write_pages(pages)
 
 
@@ -19,7 +20,14 @@ def make_directories(site_data: SiteData) -> None:
     """(Re)make site directories on the filesystem."""
     shutil.rmtree(site_data.site_dir)
     site_data.site_dir.mkdir(parents=False, exist_ok=True)
+    site_data.asset_dir.mkdir(parents=False, exist_ok=True)
     site_data.record_page_dir.mkdir(parents=False, exist_ok=True)
+
+
+def write_stylesheet(site_data: SiteData) -> None:
+    """Write stylesheet file."""
+    with open(site_data.stylesheet_path, "w") as cssfile:
+        cssfile.write(site_data.stylesheet_content)
 
 
 def render_pages(site_data: SiteData) -> dict[Path, str]:
