@@ -45,15 +45,15 @@ def apply_links(text: str, site_data: SiteData) -> str:
 
 def render_homepage(site_data: SiteData) -> str:
     """Render the homepage."""
-    template = jinja_env.get_template("homepage.html")
+    template = jinja_env.get_template("homepage.html.jinja")
     return template.render(site_data=site_data)
 
 
 def _template_dispatch(record: Record) -> Template:
     if isinstance(record, TextRecord):
-        template_file = "textrecord_page.html"
+        template_file = "textrecord_page.html.jinja"
     else:
-        template_file = "record_page.html"
+        template_file = "record_page.html.jinja"
     return jinja_env.get_template(template_file)
 
 

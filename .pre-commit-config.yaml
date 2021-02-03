@@ -34,7 +34,7 @@ repos:
     rev: v2.2.1
     hooks:
       - id: prettier
-        exclude: ^notebrowser/templates/
+        exclude: .jinja$
   - repo: local
     hooks:
       - id: tests
