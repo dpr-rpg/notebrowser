@@ -17,7 +17,7 @@ from notebrowser.records import (
     Record,
     Session,
 )
-from notebrowser.uri import URI, Library, get_references
+from notebrowser.uri import URI, Library
 
 _record_class_dict: defaultdict[str, type[Record]] = defaultdict(
     lambda: Record,
@@ -60,8 +60,7 @@ def _parse_markdown_data(contents: list[str]) -> dict[str, Any]:
 
 def _parse_markdown_file_with_header(text: str) -> dict[str, Any]:
     metadata, content = frontmatter.parse(text)
-    references = {u.uri for u in get_references(content)}
-    return {"text_body": content, "text_references": references, **metadata}
+    return {"text_body": content, **metadata}
 
 
 def _read_files(base_dir: Path, glob: str) -> list[str]:

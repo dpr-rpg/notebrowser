@@ -6,7 +6,7 @@ from typing import Optional
 
 from mistune import markdown
 
-from notebrowser.uri import URI, Library
+from notebrowser.uri import URI, Library, get_references
 
 
 @dataclass(frozen=True)
@@ -41,6 +41,12 @@ class Record:
     description: MarkdownText = MarkdownText("")
     gallery: Optional[list[Image]] = None
     info: dict[str, str] = field(default_factory=dict)
+    references: set[URI] = field(init=False)
+
+    def __post_init__(self):
+        """Extract references from description."""
+        references = get_references(self.description.text)
+        object.__setattr__(self, "references", references)
 
 
 @dataclass(frozen=True)
@@ -80,7 +86,13 @@ class TextRecord(Record):
 
     date: Optional[datetime.date] = None
     text_body: MarkdownText = MarkdownText("")
-    text_references: set[URI] = field(default_factory=set)
+
+    def __post_init__(self):
+        """Extract references from description and body text."""
+        references = get_references(self.description.text) | get_references(
+            self.text_body.text
+        )
+        object.__setattr__(self, "references", references)
 
 
 @dataclass(frozen=True)
