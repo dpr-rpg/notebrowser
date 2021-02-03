@@ -6,7 +6,10 @@
     <title>{% block title %}Title{% endblock %}</title>
 </head>
 <body>
-    {% block heading %}<h1>Page heading</h1>{% endblock %}
-    {% block body %}<p>Page body</p>{% endblock %}
+    <nav><a href="{{ site_data.homepage }}">Home</a></nav>
+    <main>
+        {% block heading %}<h1>Page heading</h1>{% endblock %}
+        {% block body %}<p>Page body</p>{% endblock %}
+    </main>
 </body>
 </html>

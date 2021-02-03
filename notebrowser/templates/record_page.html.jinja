@@ -1,9 +1,12 @@
 {% extends "page.html.jinja" %}
+
 {% block title %}{{ record.name }}{% endblock %}
+
 {% block heading %}
-<h1>{{ record.name }}</h1>
-<p>{{ record.tagline }}</p>
+    <h1>{{ record.name }}</h1>
+    <p>{{ record.tagline }}</p>
 {% endblock %}
+
 {% block body %}
     {{ record.description }}
 {% endblock %}

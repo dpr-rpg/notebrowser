@@ -3,6 +3,10 @@ record_type: session
 uri: session-23
 name: Session 23
 tagline: Two of five stars; might skip gala next year
+description: |
+  The group flees from {red-cliffs} and ends up in {farming-village}.
+  They shelter for the night with {rice-farmer}, who tells them about {dukes-manor}.
+  In the morning, {rice-farmer} tells them they need to hide from a disturbance in town.
 funfacts:
   kywe: Kywe is thinking about what happened to the Anchor and feeling guilty. She wonders whether Magic Missile could have helped.
   hildegard: Hildegard, having seen what happened to the children, was brought back to thinking about the children she left back home. She wonders what in their lives she's missed.
