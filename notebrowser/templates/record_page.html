@@ -1,7 +1,9 @@
 {% extends "page.html" %}
 {% block title %}{{ record.name }}{% endblock %}
-{% block heading %}{{ record.name }}{% endblock %}
+{% block heading %}
+<h1>{{ record.name }}</h1>
+<p>{{ record.tagline }}</p>
+{% endblock %}
 {% block body %}
-    <p>{{ record.tagline }}</p>
-    {{ record.text_body }}
+    {{ record.description }}
 {% endblock %}

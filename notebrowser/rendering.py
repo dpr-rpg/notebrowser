@@ -3,8 +3,9 @@ from functools import reduce
 from pathlib import Path
 from typing import Any
 
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, PackageLoader, Template
 
+from notebrowser.records import Record, TextRecord
 from notebrowser.sitedata import SiteData
 from notebrowser.uri import URI, get_references
 
@@ -48,8 +49,16 @@ def render_homepage(site_data: SiteData) -> str:
     return template.render(site_data=site_data)
 
 
+def _template_dispatch(record: Record) -> Template:
+    if isinstance(record, TextRecord):
+        template_file = "textrecord_page.html"
+    else:
+        template_file = "record_page.html"
+    return jinja_env.get_template(template_file)
+
+
 def render_record_page(site_data: SiteData, uri: URI) -> str:
     """Render a page for a single record."""
-    template = jinja_env.get_template("record_page.html")
     record = site_data.records[uri]
+    template = _template_dispatch(record)
     return template.render(site_data=site_data, record=record)

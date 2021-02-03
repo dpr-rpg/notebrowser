@@ -1,12 +1,13 @@
 {% extends "page.html" %}
 {% block title %}Home{% endblock %}
-{% block heading %}Home{% endblock %}
+{% block heading %}<h1>Home</h1>{% endblock %}
 {% block body %}
-<ul>
-{% for uri, record in site_data.records.items() %}
-    <li>
-        {{ uri }}: {{ record.tagline }}
-    </li>
-{% endfor %}
-</ul>
+    <h2>Records</h2>
+    <ul>
+    {% for uri, record in site_data.records.items() %}
+        <li>
+            {{ uri }}{% if record.tagline %}: {{ record.tagline }}{% endif %}
+        </li>
+    {% endfor %}
+    </ul>
 {% endblock %}
