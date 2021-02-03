@@ -41,7 +41,7 @@ def load_records(record_dir: Path) -> Library[Record]:
 
 
 def record_from_dict(data: dict[str, Any], cast: list[type]) -> Record:
-    """Convert Dict[str, Any] to Data object."""
+    """Convert Dict[str, Any] to Record object."""
     return dacite.from_dict(
         data=data,
         data_class=_record_class_dict[data["record_type"]],
