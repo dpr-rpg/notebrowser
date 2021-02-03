@@ -11,6 +11,7 @@ PyYAML = "^5.4.1"
 dacite = "^1.6.0"
 python-frontmatter = "^0.5.0"
 Jinja2 = "^2.11.3"
+mistune = "^0.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"

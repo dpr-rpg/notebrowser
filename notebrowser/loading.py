@@ -8,28 +8,39 @@ import dacite
 import frontmatter
 import yaml
 
-from notebrowser import records
+from notebrowser.records import (
+    Location,
+    MarkdownText,
+    NonPlayerCharacter,
+    Note,
+    PlayerCharacter,
+    Record,
+    Session,
+)
 from notebrowser.uri import URI, Library, get_references
 
-_record_class_dict: defaultdict[str, type[records.Record]] = defaultdict(
-    lambda: records.Record,
-    session=records.Session,
-    note=records.Note,
-    pc=records.PlayerCharacter,
-    npc=records.NonPlayerCharacter,
-    location=records.Location,
+_record_class_dict: defaultdict[str, type[Record]] = defaultdict(
+    lambda: Record,
+    session=Session,
+    note=Note,
+    pc=PlayerCharacter,
+    npc=NonPlayerCharacter,
+    location=Location,
 )
 
 
-def load_records(record_dir: Path) -> Library[records.Record]:
+def load_records(record_dir: Path) -> Library[Record]:
     """Load records found in .md and .yml files in record_dir."""
     yaml_files = _read_files(record_dir, "*.yml")
     markdown_files = _read_files(record_dir, "*.md")
     data_dict = _parse_yaml_data(yaml_files) | _parse_markdown_data(markdown_files)
-    return {URI(k): record_from_dict(v, cast=[URI, Path]) for k, v in data_dict.items()}
+    return {
+        URI(k): record_from_dict(v, cast=[URI, Path, MarkdownText])
+        for k, v in data_dict.items()
+    }
 
 
-def record_from_dict(data: dict[str, Any], cast: list[type]) -> records.Record:
+def record_from_dict(data: dict[str, Any], cast: list[type]) -> Record:
     """Convert Dict[str, Any] to Data object."""
     return dacite.from_dict(
         data=data,

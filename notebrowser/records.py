@@ -4,7 +4,20 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
+from mistune import markdown
+
 from notebrowser.uri import URI, Library
+
+
+@dataclass(frozen=True)
+class MarkdownText:
+    """A block of markdown text."""
+
+    text: str
+
+    def __str__(self):
+        """Render markdown text as html."""
+        return markdown(self.text)
 
 
 @dataclass(frozen=True)
@@ -25,7 +38,7 @@ class Record:
     name: str
     shortname: Optional[str] = None
     tagline: str = ""
-    description: str = ""
+    description: MarkdownText = MarkdownText("")
     gallery: Optional[list[Image]] = None
     info: dict[str, str] = field(default_factory=dict)
 
@@ -66,7 +79,7 @@ class TextRecord(Record):
     """Base class for Records that are mainly free text."""
 
     date: Optional[datetime.date] = None
-    text_body: str = ""
+    text_body: MarkdownText = MarkdownText("")
     text_references: set[URI] = field(default_factory=set)
 
 
