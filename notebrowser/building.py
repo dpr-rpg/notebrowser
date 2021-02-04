@@ -1,9 +1,9 @@
 """Functions for building the site."""
-
+import importlib
 import shutil
 from pathlib import Path
 
-from notebrowser import rendering
+from notebrowser import assets, rendering
 from notebrowser.sitedata import SiteData, create_site_data
 
 
@@ -13,11 +13,24 @@ def make(base_dir: Path) -> None:
     pages = render_pages(site_data)
     clean(site_data)
     write_pages(site_data, pages)
+    deploy_fonts(site_data)
+
+
+def deploy_fonts(site_data: SiteData) -> None:
+    """Add font files to site assets."""
+    styles = ["regular", "bold", "italic", "bold_italic"]
+    target_dir = site_data.site_dir / site_data.asset_dir.relative_to("/")
+    for style in styles:
+        font_file = f"charter_{style}.woff2"
+        font_data = importlib.resources.read_binary(assets, font_file)
+        with open(target_dir / font_file, "wb") as new_file:
+            new_file.write(font_data)
 
 
 def clean(site_data: SiteData) -> None:
     """Remove any existing site files."""
-    shutil.rmtree(site_data.site_dir)
+    if site_data.site_dir.exists():
+        shutil.rmtree(site_data.site_dir)
 
 
 def render_pages(site_data: SiteData) -> dict[Path, str]:

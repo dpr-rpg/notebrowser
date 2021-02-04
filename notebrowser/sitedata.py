@@ -3,7 +3,7 @@ import importlib.resources
 from dataclasses import dataclass
 from pathlib import Path
 
-import notebrowser.templates
+import notebrowser.assets
 from notebrowser.loading import load_records
 from notebrowser.records import Record
 from notebrowser.uri import URI, Library
@@ -47,5 +47,5 @@ def create_site_data(base_dir: Path) -> SiteData:
         record_page_dir,
         record_pages,
         asset_dir / "style.css",
-        importlib.resources.read_text(notebrowser.templates, "style.css"),
+        importlib.resources.read_text(notebrowser.assets, "style.css"),
     )

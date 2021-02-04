@@ -1,0 +1,48 @@
+@font-face {
+  font-family: charter;
+  font-style: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  src: url("charter_regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: charter;
+  font-style: italic;
+  font-weight: normal;
+  font-stretch: normal;
+  src: url("charter_italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: charter;
+  font-style: normal;
+  font-weight: bold;
+  font-stretch: normal;
+  src: url("charter_bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: charter;
+  font-style: italic;
+  font-weight: bold;
+  font-stretch: normal;
+  src: url("charter_bold_italic.woff2") format("woff2");
+}
+
+html {
+}
+
+body {
+  font-family: charter;
+  font-size: 18px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+}
+
+a {
+  text-decoration: none;
+  color: #00008b;
+}
