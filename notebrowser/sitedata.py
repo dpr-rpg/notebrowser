@@ -1,9 +1,7 @@
 """Class for storing the directory structure of the site."""
-import importlib.resources
 from dataclasses import dataclass
 from pathlib import Path
 
-import notebrowser.assets
 from notebrowser.loading import load_records
 from notebrowser.records import Record
 from notebrowser.uri import URI, Library
@@ -22,7 +20,6 @@ class SiteData:
     record_pages: Library[Path]
 
     stylesheet_path: Path
-    stylesheet_content: str
 
 
 def record_page_url(record_page_dir: Path, uri: URI) -> Path:
@@ -40,12 +37,11 @@ def create_site_data(base_dir: Path) -> SiteData:
     records = load_records(record_source_dir)
     record_pages = {uri: record_page_url(record_page_dir, uri) for uri in records}
     return SiteData(
-        site_dir,
-        asset_dir,
-        root / "home.html",
-        records,
-        record_page_dir,
-        record_pages,
-        asset_dir / "style.css",
-        importlib.resources.read_text(notebrowser.assets, "style.css"),
+        site_dir=site_dir,
+        asset_dir=asset_dir,
+        homepage=root / "home.html",
+        records=records,
+        record_page_dir=record_page_dir,
+        record_pages=record_pages,
+        stylesheet_path=asset_dir / "css" / "style.css",
     )
