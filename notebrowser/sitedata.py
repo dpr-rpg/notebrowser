@@ -32,16 +32,17 @@ def record_page_url(record_page_dir: Path, uri: URI) -> Path:
 
 def create_site_data(base_dir: Path) -> SiteData:
     """Create site SiteData."""
+    root = Path("/")
     site_dir = base_dir / "site"
-    asset_dir = site_dir / "assets"
     record_source_dir = base_dir / "records"
+    asset_dir = root / "assets"
+    record_page_dir = root / "records"
     records = load_records(record_source_dir)
-    record_page_dir = site_dir / "records"
     record_pages = {uri: record_page_url(record_page_dir, uri) for uri in records}
     return SiteData(
         site_dir,
         asset_dir,
-        site_dir / "home.html",
+        root / "home.html",
         records,
         record_page_dir,
         record_pages,
