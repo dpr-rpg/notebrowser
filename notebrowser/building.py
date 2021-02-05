@@ -1,6 +1,7 @@
 """Functions for building the site."""
 import importlib.resources
 import shutil
+from dataclasses import astuple, dataclass
 from pathlib import Path
 
 from notebrowser import rendering
@@ -9,30 +10,44 @@ from notebrowser.loading import load_records
 from notebrowser.sitedata import SiteData, create_site_data
 
 
+@dataclass(frozen=True)
+class Directories:
+    """The project's directory structure."""
+
+    records: Path = Path("records")
+    site: Path = Path("site")
+    assets: Path = Path("assets")
+    css: Path = assets / "css"
+    fonts: Path = assets / "fonts"
+    img: Path = assets / "img"
+
+    def __iter__(self):
+        """Iterate over directories."""
+        return iter(astuple(self))
+
+
 def initialize_project_directory(base_dir: Path) -> None:
     """Create input data directory structure."""
-    input_paths = [
-        base_dir / Path(d)
-        for d in ["records", "assets/img", "assets/css", "assets/fonts"]
-    ]
-    for path in input_paths:
-        path.mkdir(parents=True, exist_ok=True)
+    for d in Directories():
+        (base_dir / d).mkdir(parents=True, exist_ok=True)
 
 
 def deploy_default_assets(base_dir: Path) -> None:
     """Add default css and font files to assets."""
-    _deploy_css(base_dir / "assets" / "css")
-    _deploy_fonts(base_dir / "assets" / "fonts")
+    dirs = Directories()
+    _deploy_css(base_dir / dirs.css)
+    _deploy_fonts(base_dir / dirs.fonts)
 
 
 def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
-    records = load_records(base_dir / "records")
-    site_data = create_site_data(base_dir / "site", records)
+    dirs = Directories()
+    records = load_records(base_dir / dirs.records)
+    site_data = create_site_data(base_dir / dirs.site, records)
     pages = render_pages(site_data)
     clean(site_data)
     write_pages(site_data, pages)
-    copy_assets(site_data, base_dir / "assets")
+    copy_assets(site_data, base_dir / dirs.assets)
     return site_data
 
 
