@@ -5,8 +5,8 @@ from typing import Any
 
 from jinja2 import Environment, PackageLoader, Template
 
+from notebrowser.configuration import SiteData
 from notebrowser.records import Record, TextRecord
-from notebrowser.sitedata import SiteData
 from notebrowser.uri import URI, get_references
 
 jinja_env = Environment(loader=PackageLoader("notebrowser", "templates"))

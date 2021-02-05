@@ -1,34 +1,19 @@
 """Functions for building the site."""
 import shutil
-from dataclasses import astuple, dataclass, field
 from importlib import resources
 from pathlib import Path
 from typing import Callable
 
 from notebrowser import rendering
 from notebrowser.assets import css, fonts
-from notebrowser.configuration import Configuration, load_configuration
+from notebrowser.configuration import (
+    Configuration,
+    Directories,
+    SiteData,
+    config_fn,
+    load_configuration,
+)
 from notebrowser.loading import load_records
-from notebrowser.sitedata import SiteData
-
-config_fn = Path("notebrowser.yml")
-
-
-@dataclass(frozen=True)
-class Directories:
-    """The project's directory structure."""
-
-    records: Path = field(init=False, default=Path("records"))
-    site: Path = field(init=False, default=Path("site"))
-    _assets = Path("assets")
-    assets: Path = field(init=False, default=_assets)
-    css: Path = field(init=False, default=_assets / "css")
-    fonts: Path = field(init=False, default=_assets / "fonts")
-    img: Path = field(init=False, default=_assets / "img")
-
-    def __iter__(self):
-        """Iterate over directories."""
-        return iter(astuple(self))
 
 
 def initialize(base_dir: Path):
