@@ -1,8 +1,9 @@
 """Functions for building the site."""
-import importlib.resources
 import shutil
 from dataclasses import astuple, dataclass, field
+from importlib import resources
 from pathlib import Path
+from typing import Callable
 
 from notebrowser import rendering
 from notebrowser.assets import css, fonts
@@ -36,8 +37,8 @@ def initialize_project_directory(base_dir: Path) -> None:
 def deploy_default_assets(base_dir: Path) -> None:
     """Add default css and font files to assets."""
     dirs = Directories()
-    _deploy_css(base_dir / dirs.css)
-    _deploy_fonts(base_dir / dirs.fonts)
+    _deploy_assets(css, ".css", base_dir / dirs.css)
+    _deploy_assets(fonts, ".woff2", base_dir / dirs.fonts, is_binary=True)
 
 
 def make_site(base_dir: Path) -> SiteData:
@@ -52,24 +53,19 @@ def make_site(base_dir: Path) -> SiteData:
     return site_data
 
 
-def _deploy_fonts(font_dir: Path) -> None:
-    if not font_dir.exists():
-        font_dir.mkdir(parents=True)
-    font_styles = ["regular", "bold", "italic", "bold_italic"]
-    for style in font_styles:
-        font_file = f"charter_{style}.woff2"
-        font_data = importlib.resources.read_binary(fonts, font_file)
-        with open(font_dir / font_file, "wb") as new_file:
-            new_file.write(font_data)
-
-
-def _deploy_css(css_dir: Path) -> None:
-    stylesheet = "style.css"
-    if not css_dir.exists():
-        css_dir.mkdir(parents=True)
-    css_data = importlib.resources.read_text(css, stylesheet)
-    with open(css_dir / stylesheet, "w") as css_file:
-        css_file.write(css_data)
+def _deploy_assets(module, suffix: str, target_dir: Path, is_binary=False) -> None:
+    read: Callable
+    if is_binary:
+        read = resources.read_binary
+        mode = "wb"
+    else:
+        read = resources.read_text
+        mode = "w"
+    for asset in resources.files(module).iterdir():
+        if asset.name.endswith(suffix):
+            data = read(module, asset.name)
+            with open(target_dir / asset.name, mode) as new_file:
+                new_file.write(data)
 
 
 def clean(site_data: SiteData) -> None:
