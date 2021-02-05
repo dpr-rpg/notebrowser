@@ -1,25 +1,26 @@
 """Functions for building the site."""
 import importlib.resources
 import shutil
-from dataclasses import astuple, dataclass
+from dataclasses import astuple, dataclass, field
 from pathlib import Path
 
 from notebrowser import rendering
 from notebrowser.assets import css, fonts
 from notebrowser.loading import load_records
-from notebrowser.sitedata import SiteData, create_site_data
+from notebrowser.sitedata import SiteData
 
 
 @dataclass(frozen=True)
 class Directories:
     """The project's directory structure."""
 
-    records: Path = Path("records")
-    site: Path = Path("site")
-    assets: Path = Path("assets")
-    css: Path = assets / "css"
-    fonts: Path = assets / "fonts"
-    img: Path = assets / "img"
+    records: Path = field(init=False, default=Path("records"))
+    site: Path = field(init=False, default=Path("site"))
+    _assets = Path("assets")
+    assets: Path = field(init=False, default=_assets)
+    css: Path = field(init=False, default=_assets / "css")
+    fonts: Path = field(init=False, default=_assets / "fonts")
+    img: Path = field(init=False, default=_assets / "img")
 
     def __iter__(self):
         """Iterate over directories."""
@@ -43,7 +44,7 @@ def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
     dirs = Directories()
     records = load_records(base_dir / dirs.records)
-    site_data = create_site_data(base_dir / dirs.site, records)
+    site_data = SiteData(base_dir / dirs.site, records)
     pages = render_pages(site_data)
     clean(site_data)
     write_pages(site_data, pages)
@@ -93,7 +94,7 @@ def render_pages(site_data: SiteData) -> dict[Path, str]:
 def write_pages(site_data: SiteData, pages: dict[Path, str]) -> None:
     """Make directories and write pages to filesystem."""
     for page, content in pages.items():
-        page_path = site_data.site_dir / page.relative_to("/")
+        page_path = site_data.site_dir / page.relative_to(site_data.root)
         if not page_path.parent.exists():
             page_path.parent.mkdir(parents=True)
         with open(page_path, "w") as f:
@@ -102,6 +103,6 @@ def write_pages(site_data: SiteData, pages: dict[Path, str]) -> None:
 
 def copy_assets(site_data: SiteData, asset_source: Path) -> None:
     """Copy assets to site directory."""
-    asset_dest = site_data.site_dir / site_data.asset_dir.relative_to("/")
+    asset_dest = site_data.site_dir / site_data.asset_dir.relative_to(site_data.root)
     if asset_source.exists():
         shutil.copytree(asset_source, asset_dest, dirs_exist_ok=True)
