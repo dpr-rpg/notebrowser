@@ -9,6 +9,22 @@ from notebrowser.loading import load_records
 from notebrowser.sitedata import SiteData, create_site_data
 
 
+def initialize_project_directory(base_dir: Path) -> None:
+    """Create input data directory structure."""
+    input_paths = [
+        base_dir / Path(d)
+        for d in ["records", "assets/img", "assets/css", "assets/fonts"]
+    ]
+    for path in input_paths:
+        path.mkdir(parents=True, exist_ok=True)
+
+
+def deploy_default_assets(base_dir: Path) -> None:
+    """Add default css and font files to assets."""
+    _deploy_css(base_dir / "assets" / "css")
+    _deploy_fonts(base_dir / "assets" / "fonts")
+
+
 def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
     records = load_records(base_dir / "records")
@@ -16,23 +32,8 @@ def make_site(base_dir: Path) -> SiteData:
     pages = render_pages(site_data)
     clean(site_data)
     write_pages(site_data, pages)
-    deploy_assets(site_data, base_dir / "assets")
+    copy_assets(site_data, base_dir / "assets")
     return site_data
-
-
-def deploy_assets(site_data: SiteData, asset_source: Path) -> None:
-    """Add css and font files to site assets."""
-    font_dir = site_data.site_dir / site_data.font_dir.relative_to("/")
-    css_dir = site_data.site_dir / site_data.stylesheet_dir.relative_to("/")
-    asset_dest = site_data.site_dir / site_data.asset_dir.relative_to("/")
-    _deploy_fonts(font_dir)
-    _deploy_css(css_dir)
-    _copy_assets(asset_dest, asset_source)
-
-
-def _copy_assets(asset_dest: Path, asset_source: Path) -> None:
-    if asset_source.exists():
-        shutil.copytree(asset_source, asset_dest, dirs_exist_ok=True)
 
 
 def _deploy_fonts(font_dir: Path) -> None:
@@ -51,7 +52,7 @@ def _deploy_css(css_dir: Path) -> None:
     if not css_dir.exists():
         css_dir.mkdir(parents=True)
     css_data = importlib.resources.read_text(css, stylesheet)
-    with open(css_dir / "style.css", "w") as css_file:
+    with open(css_dir / stylesheet, "w") as css_file:
         css_file.write(css_data)
 
 
@@ -82,3 +83,10 @@ def write_pages(site_data: SiteData, pages: dict[Path, str]) -> None:
             page_path.parent.mkdir(parents=True)
         with open(page_path, "w") as f:
             f.write(content)
+
+
+def copy_assets(site_data: SiteData, asset_source: Path) -> None:
+    """Copy assets to site directory."""
+    asset_dest = site_data.site_dir / site_data.asset_dir.relative_to("/")
+    if asset_source.exists():
+        shutil.copytree(asset_source, asset_dest, dirs_exist_ok=True)

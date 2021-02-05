@@ -20,11 +20,13 @@ def cli(ctx, directory: str):
     ctx.obj = Path(directory)
 
 
-@cli.command(help="Initialize project directory.")
+@cli.command(help="Initialize project directory and default assets.")
 @click.pass_obj
 def init(base_dir):
-    """Initialize project directory."""
-    click.echo(f"TODO: initializing site at {base_dir.absolute()}")
+    """Initialize project directory and deploy default assets."""
+    click.echo(f"initializing project at {base_dir.absolute()}")
+    building.initialize_project_directory(base_dir)
+    building.deploy_default_assets(base_dir)
 
 
 @cli.command(help="Make site pages.")

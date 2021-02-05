@@ -50,7 +50,7 @@ def record_from_dict(data: dict[str, Any], cast: list[type]) -> Record:
 
 
 def _parse_yaml_data(contents: list[str]) -> dict[str, Any]:
-    return yaml.safe_load("".join(contents))
+    return yaml.safe_load("".join(contents)) or dict()
 
 
 def _parse_markdown_data(contents: list[str]) -> dict[str, Any]:
