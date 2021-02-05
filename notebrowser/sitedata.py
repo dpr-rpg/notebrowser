@@ -2,6 +2,7 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from notebrowser.configuration import Configuration
 from notebrowser.records import Record
 from notebrowser.uri import Library
 
@@ -22,7 +23,7 @@ class SiteData:
 
     site_dir: Path
     records: Library[Record]
-    stylesheet: Path = Path("style.css")
+    config: Configuration
 
     record_pages: Library[Path] = field(init=False)
 

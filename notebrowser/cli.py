@@ -28,8 +28,7 @@ def cli(ctx, directory: str):
 def init(base_dir):
     """Initialize project directory and deploy default assets."""
     click.echo(f"Initializing project at {base_dir.absolute()}")
-    building.initialize_project_directory(base_dir)
-    building.deploy_default_assets(base_dir)
+    building.initialize(base_dir)
 
 
 @cli.command(help="Make site pages.")

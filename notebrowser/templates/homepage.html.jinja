@@ -1,6 +1,6 @@
 {% extends "page.html.jinja" %}
-{% block title %}Home{% endblock %}
-{% block heading %}<h1>Home</h1>{% endblock %}
+{% block title %}{{ site_data.config.title }}{% endblock %}
+{% block heading %}<h1>{{ site_data.config.title }}</h1>{% endblock %}
 {% block body %}
     <h2>Records</h2>
     <ul>

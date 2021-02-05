@@ -7,8 +7,11 @@ from typing import Callable
 
 from notebrowser import rendering
 from notebrowser.assets import css, fonts
+from notebrowser.configuration import Configuration, load_configuration
 from notebrowser.loading import load_records
 from notebrowser.sitedata import SiteData
+
+config_fn = Path("notebrowser.yml")
 
 
 @dataclass(frozen=True)
@@ -28,6 +31,13 @@ class Directories:
         return iter(astuple(self))
 
 
+def initialize(base_dir: Path):
+    """Initialize project."""
+    initialize_project_directory(base_dir)
+    deploy_default_assets(base_dir)
+    create_config_file(base_dir)
+
+
 def initialize_project_directory(base_dir: Path) -> None:
     """Create input data directory structure."""
     for d in Directories():
@@ -41,11 +51,24 @@ def deploy_default_assets(base_dir: Path) -> None:
     _deploy_assets(fonts, ".woff2", base_dir / dirs.fonts, is_binary=True)
 
 
+def create_config_file(base_dir: Path) -> Path:
+    """Write a default configuration file."""
+    config_file = base_dir / config_fn
+    config = Configuration()
+    config.to_file(config_file)
+    return config_file
+
+
 def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
     dirs = Directories()
+    configuration = load_configuration(base_dir / config_fn)
     records = load_records(base_dir / dirs.records)
-    site_data = SiteData(base_dir / dirs.site, records)
+    site_data = SiteData(
+        site_dir=base_dir / dirs.site,
+        config=configuration,
+        records=records,
+    )
     pages = render_pages(site_data)
     clean(site_data)
     write_pages(site_data, pages)
