@@ -9,7 +9,7 @@ from notebrowser.loading import load_records
 from notebrowser.sitedata import SiteData, create_site_data
 
 
-def make(base_dir: Path) -> None:
+def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
     records = load_records(base_dir / "records")
     site_data = create_site_data(base_dir / "site", records)
@@ -17,6 +17,7 @@ def make(base_dir: Path) -> None:
     clean(site_data)
     write_pages(site_data, pages)
     deploy_assets(site_data, base_dir / "assets")
+    return site_data
 
 
 def deploy_assets(site_data: SiteData, asset_source: Path) -> None:

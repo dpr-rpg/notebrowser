@@ -5,6 +5,9 @@ description = "Generate a static website for browsing your notes."
 authors = ["Daniel P. Rice <daniel.paul.rice@gmail.com>"]
 license = "GPL-3.0-only"
 
+[tool.poetry.scripts]
+notebrowser="notebrowser.cli:cli"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 PyYAML = "^5.4.1"
@@ -12,6 +15,7 @@ dacite = "^1.6.0"
 python-frontmatter = "^0.5.0"
 Jinja2 = "^2.11.3"
 mistune = "^0.8.4"
+click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"
