@@ -7,10 +7,10 @@ from typing import Callable
 from notebrowser import rendering
 from notebrowser.assets import css, fonts
 from notebrowser.configuration import (
+    CONFIGFILE,
     Configuration,
     Directories,
     SiteData,
-    config_fn,
     load_configuration,
 )
 from notebrowser.loading import load_records
@@ -22,7 +22,7 @@ def initialize(base_dir: Path):
     config = Configuration()
     initialize_project_directory(base_dir, dirs)
     deploy_default_assets(base_dir, dirs)
-    config.to_file(base_dir / config_fn)
+    config.to_file(base_dir / CONFIGFILE)
 
 
 def initialize_project_directory(base_dir: Path, dirs: Directories) -> None:
@@ -40,7 +40,7 @@ def deploy_default_assets(base_dir: Path, dirs: Directories) -> None:
 def make_site(base_dir: Path) -> SiteData:
     """Load data, clean site directory, and build site."""
     dirs = Directories()
-    configuration = load_configuration(base_dir / config_fn)
+    configuration = load_configuration(base_dir / CONFIGFILE)
     records = load_records(base_dir / dirs.records)
     site_data = SiteData(
         site_dir=base_dir / dirs.site,

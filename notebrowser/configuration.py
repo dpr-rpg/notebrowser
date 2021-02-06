@@ -9,12 +9,12 @@ import yaml
 from notebrowser.records import Record
 from notebrowser.uri import Library
 
-config_fn = Path("notebrowser.yml")
+CONFIGFILE = Path("notebrowser.yml")
 
 
 @dataclass(frozen=True)
 class Configuration:
-    """Configuration class."""
+    """Project configuration."""
 
     title: str = "Title"
     author: str = "Author"
@@ -60,7 +60,7 @@ class SiteData:
     record_page_dir: Path = field(init=False, default=_root / "records")
     asset_dir: Path = field(init=False, default=_assets)
     css_dir: Path = field(init=False, default=_assets / "css")
-    font_dir: Path = field(init=False, default=_assets / "font")
+    font_dir: Path = field(init=False, default=_assets / "fonts")
     img_dir: Path = field(init=False, default=_assets / "img")
     homepage: Path = field(init=False, default=_root / "home.html")
 
