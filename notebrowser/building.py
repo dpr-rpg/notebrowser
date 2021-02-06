@@ -18,30 +18,23 @@ from notebrowser.loading import load_records
 
 def initialize(base_dir: Path):
     """Initialize project."""
-    initialize_project_directory(base_dir)
-    deploy_default_assets(base_dir)
-    create_config_file(base_dir)
+    dirs = Directories()
+    config = Configuration()
+    initialize_project_directory(base_dir, dirs)
+    deploy_default_assets(base_dir, dirs)
+    config.to_file(base_dir / config_fn)
 
 
-def initialize_project_directory(base_dir: Path) -> None:
+def initialize_project_directory(base_dir: Path, dirs: Directories) -> None:
     """Create input data directory structure."""
-    for d in Directories():
+    for d in dirs:
         (base_dir / d).mkdir(parents=True, exist_ok=True)
 
 
-def deploy_default_assets(base_dir: Path) -> None:
+def deploy_default_assets(base_dir: Path, dirs: Directories) -> None:
     """Add default css and font files to assets."""
-    dirs = Directories()
     _deploy_assets(css, ".css", base_dir / dirs.css)
     _deploy_assets(fonts, ".woff2", base_dir / dirs.fonts, is_binary=True)
-
-
-def create_config_file(base_dir: Path) -> Path:
-    """Write a default configuration file."""
-    config_file = base_dir / config_fn
-    config = Configuration()
-    config.to_file(config_file)
-    return config_file
 
 
 def make_site(base_dir: Path) -> SiteData:
