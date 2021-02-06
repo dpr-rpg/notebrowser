@@ -1,3 +1,9 @@
-title: Fluxion
-author: Seth Donaghue
+author: Author
+record_tocs:
+  - Session
+  - Note
+  - PlayerCharacter
+  - NonPlayerCharacter
+  - Location
 stylesheet: style.css
+title: Title

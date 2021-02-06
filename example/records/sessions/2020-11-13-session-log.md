@@ -1,6 +1,6 @@
 ---
-record_type: session
-uri: session-23
+record_type: Session
+uri: Session-23
 name: Session 23
 tagline: Two of five stars; might skip gala next year
 description: |

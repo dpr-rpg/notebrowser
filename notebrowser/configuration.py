@@ -6,6 +6,7 @@ from pathlib import Path
 import dacite
 import yaml
 
+from notebrowser import records
 from notebrowser.records import Record
 from notebrowser.uri import Library
 
@@ -19,6 +20,15 @@ class Configuration:
     title: str = "Title"
     author: str = "Author"
     stylesheet: str = "style.css"
+    record_tocs: list[str] = field(
+        default_factory=lambda: [
+            "Session",
+            "Note",
+            "PlayerCharacter",
+            "NonPlayerCharacter",
+            "Location",
+        ]
+    )
 
     def to_file(self, config_file: Path):
         """Write configuration to file."""
@@ -69,11 +79,20 @@ class SiteData:
     config: Configuration
 
     record_pages: Library[Path] = field(init=False)
+    toc_pages: dict[type[Record], Path] = field(init=False)
 
     def __post_init__(self):
-        """Compute record page urls."""
+        """Compute record and toc page urls."""
         object.__setattr__(
             self,
             "record_pages",
             {uri: self.record_page_dir / f"{uri.uri}.html" for uri in self.records},
+        )
+        object.__setattr__(
+            self,
+            "toc_pages",
+            {
+                records.__getattribute__(rt): self.root / f"{rt}-toc.html"
+                for rt in self.config.record_tocs
+            },
         )

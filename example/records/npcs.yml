@@ -1,8 +1,8 @@
 rice-farmer:
-  record_type: npc
+  record_type: NonPlayerCharacter
   name: The Rice Farmer
   tagline: Rustic with a large family
-  location: farming-village
+  Location: farming-village
   description: |
     A wary but hospitable farmer.
     He has a wife and five to seven children.
@@ -12,23 +12,23 @@ rice-farmer:
       caption: In his fields.
 
 the-anchor:
-  record_type: npc
+  record_type: NonPlayerCharacter
   name: The Anchor
   tagline: Head of House Tiger
-  location: red-cliffs
+  Location: red-cliffs
 
 young-yang:
-  record_type: npc
+  record_type: NonPlayerCharacter
   name: Young Yang
   tagline: Heir to House Tiger
-  location: red-cliffs
+  Location: red-cliffs
   description: Eldest son of {the-anchor}.
 
 the-duke:
-  record_type: npc
+  record_type: NonPlayerCharacter
   name: The Duke
   tagline: Mysterious Englishman
-  location: dukes-manor
+  Location: dukes-manor
   description: |
     No one seems to know where his money comes from.
     It's very *suspicious*.

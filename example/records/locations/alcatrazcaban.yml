@@ -1,5 +1,5 @@
 alcatrazcaban:
-  record_type: location
+  record_type: Location
   name: Alcatrazcaban
-  location: top
+  Location: top
   tagline: A supermax magical prison

@@ -1,6 +1,5 @@
 """Functions for loading campaign data."""
 
-from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -8,25 +7,9 @@ import dacite
 import frontmatter
 import yaml
 
-from notebrowser.records import (
-    Location,
-    MarkdownText,
-    NonPlayerCharacter,
-    Note,
-    PlayerCharacter,
-    Record,
-    Session,
-)
+from notebrowser import records
+from notebrowser.records import MarkdownText, Record
 from notebrowser.uri import URI, Library
-
-_record_class_dict: defaultdict[str, type[Record]] = defaultdict(
-    lambda: Record,
-    session=Session,
-    note=Note,
-    pc=PlayerCharacter,
-    npc=NonPlayerCharacter,
-    location=Location,
-)
 
 
 def load_records(record_dir: Path) -> Library[Record]:
@@ -42,9 +25,13 @@ def load_records(record_dir: Path) -> Library[Record]:
 
 def record_from_dict(data: dict[str, Any], cast: list[type]) -> Record:
     """Convert Dict[str, Any] to Record object."""
+    try:
+        data_class = records.__getattribute__(data["record_type"])
+    except AttributeError:
+        data_class = Record
     return dacite.from_dict(
         data=data,
-        data_class=_record_class_dict[data["record_type"]],
+        data_class=data_class,
         config=dacite.Config(cast=cast),
     )
 

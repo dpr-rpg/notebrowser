@@ -1,6 +1,6 @@
 ---
-record_type: session
-uri: session-24
+record_type: Session
+uri: Session-24
 name: "Session 24"
 tagline: "How about a little rice breaker to help everyone get comfortable?"
 funfacts:

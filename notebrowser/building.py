@@ -82,7 +82,8 @@ def render_pages(site_data: SiteData) -> dict[Path, str]:
         (page, rendering.render_record_page(site_data, uri))
         for uri, page in site_data.record_pages.items()
     ]
-    all_pages = [homepage] + record_pages
+    toc_pages = [(page, "TODO") for record_type, page in site_data.toc_pages.items()]
+    all_pages = [homepage] + record_pages + toc_pages
     return {
         path: rendering.apply_links(content, site_data) for path, content in all_pages
     }

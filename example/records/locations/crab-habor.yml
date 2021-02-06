@@ -1,7 +1,7 @@
 crab-harbor:
-  record_type: location
+  record_type: Location
   name: Crab Harbor
-  location: western-wilderness
+  Location: western-wilderness
   tagline: A sleepy fishing village
   description: |
     Crab harbor is a small coastal village.
@@ -13,17 +13,17 @@ crab-harbor:
     - To the West, {cliffside-road} leads toward {nexus}.
 
 iron-gnome:
-  record_type: location
+  record_type: Location
   name: The Iron Gnome
   tagline: Crab Harbor's only tavern
-  location: crab-harbor
+  Location: crab-harbor
   description: |
     A bustling tavern and a good place to spend a night.
 
 magistrates-tower:
-  record_type: location
+  record_type: Location
   name: Crab Harbor Magistrate's Tower
-  location: crab-harbor
+  Location: crab-harbor
   tagline: Headquarters of the Guild in Crab Harbor
   description: |
     Improbably large tower in the center of Crab Harbor.

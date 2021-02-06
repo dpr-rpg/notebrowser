@@ -1,16 +1,16 @@
 greater-red-cliffs:
-  record_type: location
+  record_type: Location
   name: Greater Red Cliffs
   region: true
-  location: top
+  Location: top
   tagline: The city of Red Cliffs and its surroundings
   bordering:
     - To the West is the {western-wilderness}.
 
 red-cliffs:
-  record_type: location
+  record_type: Location
   name: Red Cliffs
-  location: greater-red-cliffs
+  Location: greater-red-cliffs
   tagline: A bustling coastal metropolis
   description: |
     Red Cliffs is the largest city in the area.
@@ -21,9 +21,9 @@ red-cliffs:
     - Less than a mile East is {farming-village}.
 
 farming-village:
-  record_type: location
+  record_type: Location
   name: A Small Farming Village
-  location: greater-red-cliffs
+  Location: greater-red-cliffs
   tagline: A small community in the suburbs of Red Cliffs
   description: |
     Not much going on here.
@@ -32,9 +32,9 @@ farming-village:
     - A short ride East is {dukes-manor}.
 
 dukes-manor:
-  record_type: location
+  record_type: Location
   name: The Duke's Manor
-  location: greater-red-cliffs
+  Location: greater-red-cliffs
   tagline: An English-style estate outside of Red Cliffs
   description: |
     {the-duke} lives here.
@@ -42,9 +42,9 @@ dukes-manor:
     - A short ride West is {farming-village}.
 
 aztec-embassy:
-  record_type: location
+  record_type: Location
   name: Aztec Embassy
-  location: red-cliffs
+  Location: red-cliffs
   tagline: The Aztec Embassy in Red Cliffs
   description: |
     They're up to something...

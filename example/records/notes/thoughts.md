@@ -1,6 +1,6 @@
 ---
 uri: thoughts
-record_type: note
+record_type: Note
 name: Some thoughts on the direction of the campaign
 shortname: Thoughts
 date: 2020-12-14

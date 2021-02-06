@@ -1,11 +1,11 @@
 archibald:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Archibald Ramsay
   shortname: Archibald
   class: Paladin
   level: 4
   tagline: "Jacobite laird out for vengeance"
-  location: dukes-manor
+  Location: dukes-manor
   description: |
     * Stocky, with graying reddish hair cropped close.
     * Missing an eye, lost to a British bayonette
@@ -19,7 +19,7 @@ archibald:
     - Bagpipes
 
 octavia:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Octavia Tran
   shortname: Octavia
   class: Druid
@@ -33,7 +33,7 @@ octavia:
       caption: "Octavia looking typically frantic."
 
 kywe:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Kywe
   class: Sorcerer
   level: 5
@@ -43,7 +43,7 @@ kywe:
       caption: "Kywe before last year's gala."
 
 hildegard:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Hildegard Lister
   shortname: Hildegard
   class: Bard
@@ -56,7 +56,7 @@ hildegard:
       caption: "Hildegard's usual attire."
 
 ulrich:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Ulrich Gerhardt von Pappenheim-Schwindegg
   shortname: Ulrich
   class: Monk
@@ -64,7 +64,7 @@ ulrich:
   tagline: "Famous monster-hunter"
 
 yoyo:
-  record_type: pc
+  record_type: PlayerCharacter
   name: Yoyo Zhang
   shortname: Yoyo
   class: Cleric

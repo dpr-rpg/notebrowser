@@ -1,43 +1,43 @@
 western-wilderness:
-  record_type: location
+  record_type: Location
   name: Western Wilderness
   region: true
-  location: top
+  Location: top
   tagline: A sparsely populated hinterland
   bordering:
     - To the East is {greater-red-cliffs}.
 
 nexus:
-  record_type: location
+  record_type: Location
   name: The Nexus
-  location: western-wilderness
+  Location: western-wilderness
   tagline: Strange circular disturbance
   bordering:
     - "{cliffside-road} runs East toward {crab-harbor}."
     - A path into the jungle leads Northeast to {twiggys}.
 
 bandit-camp:
-  record_type: location
+  record_type: Location
   name: The Bandit Camp
-  location: western-wilderness
+  Location: western-wilderness
   tagline: Outpost for ambushing travelers
   bordering:
     - To the South, the camp overlooks {cliffside-road}.
     - To the North, through dense jungle lies {temple-ruins}.
 
 forest-river:
-  record_type: location
+  record_type: Location
   name: The Forest River
-  location: western-wilderness
+  Location: western-wilderness
   tagline: A slow river through the wilderness
   bordering:
     - In the Southeast, the river empties into the ocean at {red-cliffs}.
     - In the Northwest, the river flows North of {temple-ruins}.
 
 temple-ruins:
-  record_type: location
+  record_type: Location
   name: The Temple Ruins
-  location: western-wilderness
+  Location: western-wilderness
   tagline: Mysterious ruins in the jungle
   bordering:
     - To the South, through dense jungle lies {bandit-camp}.
@@ -45,18 +45,18 @@ temple-ruins:
     - To the Southwest, an overgrown trail leads to {twiggys}.
 
 twiggys:
-  record_type: location
+  record_type: Location
   name: "Twiggy's Treehouse"
-  location: western-wilderness
+  Location: western-wilderness
   tagline: Ramshackle house full of mad scribblings
   bordering:
     - To the Northeast, an overgrown trail leads to {temple-ruins}.
     - To the Southwest, the forest thins out at {nexus}.
 
 cliffside-road:
-  record_type: location
+  record_type: Location
   name: The Cliffside Road
-  location: western-wilderness
+  Location: western-wilderness
   tagline: Dangerous road along the coast
   bordering:
     - To the West, the land flattens at {nexus}.

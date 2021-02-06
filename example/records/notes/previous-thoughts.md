@@ -1,6 +1,6 @@
 ---
 uri: more-thoughts
-record_type: note
+record_type: Note
 name: More thoughts
 date: 2020-12-15
 description: |
